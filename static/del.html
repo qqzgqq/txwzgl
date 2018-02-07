@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<script src="/static/js/jquery.min.js"></script>
+	<script src="/static/js/bootstrap.js"></script>
+	<script src="/static/js/bootstrap-datetimepicker.min.js"></script>
+	<link href="http://cdn.bootcss.com/twitter-bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+<title>同心医联物资管理系统</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+	<a href="#" onclick="doModel()">start</a>
+	<div class="modal hide fade" id="theModal">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3>对话框标题</h3>
+		</div>
+		<div class="modal-body">
+			<p>One fine body…</p>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn">关闭</a>
+			<a href="#" class="btn btn-primary">Save changes</a>
+		</div>
+	</div>
+</div>
+	<script>
+		var doModel = function(){
+			// alert(2);
+			$("#theModal").modal("show");
+		};
+		$().ready(function(){
+			// alert(1);
+		});
+	</script>
+</body>
+</html>

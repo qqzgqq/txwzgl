@@ -1,18 +1,18 @@
 <html>
     <head>
-        <title>test</title>
+        <title>同心医联物资管理系统</title>
         <script src="/static/js/jquery.min.js"></script>
         <script src="/static/js/bootstrap.js"></script>
         <script src="/static/js/bootstrap-datetimepicker.min.js"></script>
         <link href="http://cdn.bootcss.com/twitter-bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="/static/css/guang.css">
+        <!-- <link rel="stylesheet" href="/static/css/guang.css"> -->
         <link href="/static/css/datetimepicker.css" rel="stylesheet">
         <!-- 叫网页角标 -->
         <link rel="shortcut icon" type="image/ico" href="/static/img/1.jpg">         
 
     </head>
 
-    <body class="background-pic">   
+    <body style="background-color: #ccc">   
     
        
                         <div class="container-fluid" style="padding-left: 65px;" >
@@ -20,13 +20,28 @@
                                     <div class="span12">
                                         <ul class="nav nav-tabs">
                                             <li class="active">
-                                                <a href="/question_list?qunaye=" style="font-weight:bold" class="btn btn-info">首页</a>
+                                                <a href="/gdzc_list?qunaye=" style="font-weight:bold" class="btn btn-info">固定资产</a>
                                             </li>
                                             <li>
-                                                <a href="/question_moban" class="btn btn-info">问题模板</a>
+                                                <a href="/gdzcly_list" style="font-weight:bold" class="btn btn-info">固资领用信息</a>
                                             </li>
                                             <li>
-                                                <a href="/search" class="btn btn-info">查询</a>
+                                                <a href="/fgdzc_list" style="font-weight:bold" class="btn btn-info">非固定资产</a>
+                                            </li>
+                                            <li>
+                                                <a href="/buy_list" style="font-weight:bold" class="btn btn-info">采买信息</a>
+                                            </li>
+                                            <li>
+                                                <a href="/fgdzcly_list" style="font-weight:bold" class="btn btn-info">非固资领用信息</a>
+                                            </li>
+                                            <li>
+                                                <a href="/equipment" style="font-weight:bold" class="btn btn-info">设备信息</a>
+                                            </li>
+                                            <li>
+                                                <a href="/people_list" style="font-weight:bold" class="btn btn-info">公司人员管理</a>
+                                            </li>
+                                            <li>
+                                                <a href="/search" style="font-weight:bold" class="btn btn-info">查询</a>
                                             </li>
                                             <li class="dropdown pull-right">
                                                  <a href="#" data-toggle="dropdown" class="dropdown-toggle" class="btn btn-info">{{.sname}}<strong class="caret"></strong></a>
@@ -62,49 +77,97 @@
                                         编号
                                     </th>
                                     <th>
-                                        开始时间
+                                        资产编码
                                     </th>
                                     <th>
-                                        结束时间
+                                        地区
                                     </th>
                                     <th>
-                                        问题描述
+                                        资产类型
                                     </th>
                                     <th>
-                                        问题地点
+                                        品牌
                                     </th>
                                     <th>
-                                        问题类型
+                                        规格/型号
                                     </th>
                                     <th>
-                                        出现次数
+                                        配置明细
                                     </th>
                                     <th>
-                                        处理时间
+                                        序列号S/N
+                                    </th>
+                                    <th>
+                                        购置时间
+                                    </th>
+                                    <th>
+                                        购买渠道
+                                    </th>
+                                    <th>
+                                        存放地点
+                                    </th>
+                                    <th>
+                                        资产原值(￥)
+                                    </th>
+                                    <th>
+                                        是否使用
+                                    </th>
+                                    <th>
+                                        维修状态
+                                    </th>
+                                    <th>
+                                        折损情况
+                                    </th>
+                                    <th>
+                                        报废期限（年）
+                                    </th>
+                                    <th>
+                                        理论报废日期
+                                    </th>
+                                    <th>
+                                        报废时间差
+                                    </th>
+                                    <th>
+                                        理论报废
+                                    </th>
+                                    <th>
+                                        是否报废
+                                    </th>
+                                    <th>
+                                        报废时间
                                     </th>
                                     <th>
                                         备注
-                                    </th>
-                                    <th>
-                                        操作
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                     {{range .sqll}}
                                     <tr class="warning">
-                                            
-                                            <td>{{.IDsql}}</td>
-                                            <td>{{.Starttime}}</td>
-                                            <td>{{.Endtime}}</td>
-                                            <td>{{.Question}}</td>
+                                            <td>{{.IDgdzc}}</td>
+                                            <td>{{.Zcbm}}</td>
                                             <td>{{.Place}}</td>
-                                            <td>{{.Questiontype}}</td>
-                                            <td>{{.Count}}</td>
-                                            <td>{{.Solvetime}}</td>
-                                            <td>{{.Note}}</td>                     
+                                            <td>{{.Zclx}}</td>
+                                            <td>{{.Pinpai}}</td>
+                                            <td>{{.Xinghao}}</td>
+                                            <td>{{.Pzmx}}</td>
+                                            <td>{{.Sn}}</td>
+                                            <td>{{.Buytime}}</td>                     
+                                            <td>{{.Buyqd}}</td>                     
+                                            <td>{{.Cfdd}}</td>                     
+                                            <td>{{.Zcyz}}</td>                     
+                                            <td>{{.Syzt}}</td>                     
+                                            <td>{{.Whzt}}</td>                     
+                                            <td>{{.Zsqk}}</td>                     
+                                            <td>{{.Bfqx}}</td>                     
+                                            <td>{{.Llbfrq}}</td>                     
+                                            <td>{{.Bfsjc}}</td>                     
+                                            <td>{{.Lubf}}</td>                     
+                                            <td>{{.Sfbf}}</td>                     
+                                            <td>{{.Bftime}}</td>                     
+                                            <td>{{.BZ}}</td>                     
                                             <td>
-                                                <a href="/delete?deleteid_l={{.IDsql}}" class="btn btn-small btn-danger">删除</a>
+                                                <a href="/delete?deleteid_l={{.IDgdzc}}" class="btn btn-small btn-danger">删除</a>
                                            </td>
                                     </tr>
                                     {{end}}
@@ -125,7 +188,7 @@
                     <div>
                             <!-- <a href="/first_y?firsty={{.firsty}}" class="btn">第一页</a> -->
                             {{range $a,$b:= .sqlnum}}
-                            <a href="/question_list?qunaye={{$b}}" class="btn btn-mini">{{$b}}</a>
+                            <a href="/gdzc_list?qunaye={{$b}}" class="btn btn-mini">{{$b}}</a>
                             {{end}}
                         </div>
             </td>
