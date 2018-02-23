@@ -173,7 +173,10 @@
 
                                                 <!-- <a href="/delete_gdzc?deleteid_gdzc={{.IDgdzc}}" class="btn btn-small btn-danger">删</a> -->
                                                 <a href="#" class="btn btn-small btn-danger" onclick="doModel('{{.IDgdzc}}')">删</a>
-                                                <a href="/gdzc_update?updateid_gdzc={{.IDgdzc}}" class="btn btn-small btn-warning" >改</a>
+                                                <form action="/update_gdzc" method="get">
+                                                    <button value="{{.IDgdzc}}" name="updateid_gdzc" class="btn btn-small btn-warning">改</button>
+                                                    <!-- <a href="/update_gdzc?updateid_gdzc={{.IDgdzc}}" class="btn btn-small btn-warning" >改</a> -->
+                                                </form>
                                            </td>
                                     </tr>
                                     {{end}}
@@ -345,8 +348,6 @@
          
          if(confirm("确定删除吗？")){
             window.location="/delete_gdzc?deleteid_gdzc="+id+"&deleteid_gdzc_url="+window.location.href;
-         }else{
-            alert(2);
          }
          };
          </script>

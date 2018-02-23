@@ -220,18 +220,145 @@ func main() {
 		// }
 
 	})
+	app.Post("/update_gdzc", func(ctx iris.Context) {
+
+		id := ctx.FormValue("id")
+		zcbm := ctx.FormValue("zcbm")
+		place := ctx.FormValue("place")
+		zclx := ctx.FormValue("zclx")
+		pinpai := ctx.FormValue("pinpai")
+		ggxh := ctx.FormValue("ggxh")
+		pzmx := ctx.FormValue("pzmx")
+		sn := ctx.FormValue("sn")
+		gzsj := ctx.FormValue("gzsj")
+		gmqd := ctx.FormValue("gmqd")
+		cfdd := ctx.FormValue("cfdd")
+		zcyz := ctx.FormValue("zcyz")
+		sfsy := ctx.FormValue("sfsy")
+		wxzt := ctx.FormValue("wxzt")
+		zsqk := ctx.FormValue("zsqk")
+		bfqx := ctx.FormValue("bfqx")
+		sfbf := ctx.FormValue("sfbf")
+		bftime := ctx.FormValue("bftime")
+		bz := ctx.FormValue("bz")
+
+		// zcbm2 := ctx.FormValue("zcbm2")
+		// place2 := ctx.FormValue("place2")
+		// zclx2 := ctx.FormValue("zclx2")
+		// pinpai2 := ctx.FormValue("pinpai2")
+		// ggxh2 := ctx.FormValue("ggxh2")
+		// pzmx2 := ctx.FormValue("pzmx2")
+		// sn2 := ctx.FormValue("sn2")
+		gzsj2 := ctx.FormValue("gzsj2")
+		// gmqd2 := ctx.FormValue("gmqd2")
+		// cfdd2 := ctx.FormValue("cfdd2")
+		// zcyz2 := ctx.FormValue("zcyz2")
+		// sfsy2 := ctx.FormValue("sfsy2")
+		// wxzt2 := ctx.FormValue("wxzt2")
+		// zsqk2 := ctx.FormValue("zsqk2")
+		// bfqx2 := ctx.FormValue("bfqx2")
+		// sfbf2 := ctx.FormValue("sfbf2")
+		// bftime2 := ctx.FormValue("bftime2")
+		// bz2 := ctx.FormValue("bz2")
+		var page float64
+		db.Get(&page, "SELECT count(*) FROM gdzc ")
+		xsys := 15.0
+		zxsys := math.Ceil(page / xsys)
+		zxsS := strconv.FormatFloat(zxsys, 'f', -1, 64)
+		zxsZ := "/gdzc_list/?qunaye=" + zxsS
+		fmt.Println("post方法：", gzsj2, id, zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqx, sfbf, bftime, bz)
+		if gzsj == "" {
+			buytimeT, _ := time.Parse("2006-01-02", gzsj2)
+			if len(bfqx) == 4 {
+				bfqxI := string(bfqx[0])
+				fmt.Println("报废期限为：", bfqxI)
+				bfqxT, _ := strconv.Atoi(bfqxI)
+				llbfrq := buytimeT.AddDate(bfqxT, 0, 0).Format("2006-01-02")
+				llbfrqT, _ := time.Parse("2006-01-02", llbfrq)
+				bfsjcT := (llbfrqT.Unix() - time.Now().Unix()) / 60 / 60 / 24
+				bfqxS := bfqxI + "年"
+				bfsjcS := strconv.FormatInt(bfsjcT, 10) + "天"
+
+				// db.MustExec("insert into gdzc(zcbm, place, zclx, pinpai, xinghao, pzmx, sn, buytime, buyqd, cfdd, zcyz, syzt, whzt, zsqk, bfqx,llbfrq,bfsjc,lubf,sfbf,bftime,bz) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqxS, llbfrq, bfsjcS, llbfrq, "--", "--", bz)
+
+				fmt.Println("购买日期", gzsj2)
+				fmt.Println("理论到期时间", llbfrq)
+				fmt.Println("报废期限", bfqxS)
+				fmt.Println("报废时间差", bfsjcS)
+			} else if len(bfqx) == 5 {
+				bfqxI := string(bfqx[0]) + string(bfqx[1])
+				fmt.Println("报废期限为：", bfqxI)
+				bfqxT, _ := strconv.Atoi(bfqxI)
+				llbfrq := buytimeT.AddDate(bfqxT, 0, 0).Format("2006-01-02")
+				llbfrqT, _ := time.Parse("2006-01-02", llbfrq)
+				bfsjcT := (llbfrqT.Unix() - time.Now().Unix()) / 60 / 60 / 24
+				bfqxS := bfqxI + "年"
+				bfsjcS := strconv.FormatInt(bfsjcT, 10) + "天"
+
+				// db.MustExec("insert into gdzc(zcbm, place, zclx, pinpai, xinghao, pzmx, sn, buytime, buyqd, cfdd, zcyz, syzt, whzt, zsqk, bfqx,llbfrq,bfsjc,lubf,sfbf,bftime,bz) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqxS, llbfrq, bfsjcS, llbfrq, "--", "--", bz)
+
+				fmt.Println("购买日期", gzsj2)
+				fmt.Println("理论到期时间", llbfrq)
+				fmt.Println("报废期限", bfqxS)
+				fmt.Println("报废时间差", bfsjcS)
+			} else {
+				bfqxI := bfqx
+				fmt.Println("报废期限为：", bfqxI)
+				bfqxT, _ := strconv.Atoi(bfqxI)
+				llbfrq := buytimeT.AddDate(bfqxT, 0, 0).Format("2006-01-02")
+				llbfrqT, _ := time.Parse("2006-01-02", llbfrq)
+				bfsjcT := (llbfrqT.Unix() - time.Now().Unix()) / 60 / 60 / 24
+				bfqxS := bfqxI + "年"
+				bfsjcS := strconv.FormatInt(bfsjcT, 10) + "天"
+
+				// db.MustExec("insert into gdzc(zcbm, place, zclx, pinpai, xinghao, pzmx, sn, buytime, buyqd, cfdd, zcyz, syzt, whzt, zsqk, bfqx,llbfrq,bfsjc,lubf,sfbf,bftime,bz) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqxS, llbfrq, bfsjcS, llbfrq, "--", "--", bz)
+
+				fmt.Println("购买日期", gzsj2)
+				fmt.Println("理论到期时间", llbfrq)
+				fmt.Println("报废期限", bfqxS)
+				fmt.Println("报废时间差", bfsjcS)
+			}
+
+			// db.MustExec("insert into gdzc(zcbm, place, zclx, pinpai, xinghao, pzmx, sn, buytime, buyqd, cfdd, zcyz, syzt, whzt, zsqk, bfqx,llbfrq,bfsjc,lubf,sfbf,bftime,bz) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqxS, llbfrq, bfsjcS, llbfrq, "--", "--", bz)
+
+			// db.MustExec("update gdzc set zcbm = ?, place = ?, zclx = ?, pinpai = ?, xinghao = ?, pzmx = ?, sn = ?, buytime = ?, buyqd = ?, cfdd = ?, zcyz = ?, syzt = ?, whzt = ?, zsqk = ?, bfqx = ?,sfbf = ?,bftime = ?,bz =? where id = ?", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj2, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqx, sfbf, bftime, bz, id)
+			// } else {
+			// 	if bfqx == "" {
+			// 		db.MustExec("insert into gdzc(zcbm, place, zclx, pinpai, xinghao, pzmx, sn, buytime, buyqd, cfdd, zcyz, syzt, whzt, zsqk, bfqx,llbfrq,bfsjc,lubf,sfbf,bftime,bz) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, "--", "--", "--", "--", "--", "--", bz)
+			// 	} else {
+			// 		buytimeT, _ := time.Parse("2006-01-02", gzsj)
+			// 		bfqxT, _ := strconv.Atoi(bfqx)
+			// 		llbfrq := buytimeT.AddDate(bfqxT, 0, 0).Format("2006-01-02")
+			// 		llbfrqT, _ := time.Parse("2006-01-02", llbfrq)
+			// 		bfsjcT := (llbfrqT.Unix() - time.Now().Unix()) / 60 / 60 / 24
+			// 		bfqxS := bfqx + "年"
+			// 		bfsjcS := strconv.FormatInt(bfsjcT, 10) + "天"
+
+			// 		db.MustExec("insert into gdzc(zcbm, place, zclx, pinpai, xinghao, pzmx, sn, buytime, buyqd, cfdd, zcyz, syzt, whzt, zsqk, bfqx,llbfrq,bfsjc,lubf,sfbf,bftime,bz) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqxS, llbfrq, bfsjcS, llbfrq, "--", "--", bz)
+
+			// 		fmt.Println("购买日期", gzsj)
+			// 		fmt.Println("理论到期时间", llbfrq)
+			// 		fmt.Println("报废时间差", bfsjcT, "天")
+
+		}
+		ctx.Redirect(zxsZ, iris.StatusTemporaryRedirect)
+		ctx.View("gdzc_update.html")
+		// var page float64
+		// db.Get(&page, "SELECT count(*) FROM gdzc ")
+		// xsys := 15.0
+		// zxsys := math.Ceil(page / xsys)
+		// zxsS := strconv.FormatFloat(zxsys, 'f', -1, 64)
+		// zxsZ := "/gdzc_list/?qunaye=" + zxsS
+		// fmt.Println("去哪页", zxsZ)
+
+		// ctx.Redirect(zxsZ, iris.StatusTemporaryRedirect)
+	})
 	app.Get("/update_gdzc", func(ctx iris.Context) {
-		// s := sess.Start(ctx).GetString("name")
-		// if s != "" {
-		updateidgdzc := ctx.FormValue("updateid_gdzc")
-
-		db.MustExec("delete from gdzc where id=?", updateidgdzc)
-		fmt.Printf("id为：%s 删除成功", updateidgdzc)
-
-		ctx.Redirect("/gdzc_list", iris.StatusTemporaryRedirect)
-
-		// }
-
+		updategdzcid := ctx.FormValue("updateid_gdzc")
+		updategdzcsql := []Gdzc{}
+		db.Select(&updategdzcsql, "select * from gdzc where id = ?", updategdzcid)
+		ctx.ViewData("updategdzcsql", updategdzcsql)
+		ctx.View("gdzc_update.html")
 	})
 	app.Get("/question_moban_update", func(ctx iris.Context) {
 		// s := sess.Start(ctx).GetString("name")
@@ -293,6 +420,7 @@ func main() {
 				bfsjcT := (llbfrqT.Unix() - time.Now().Unix()) / 60 / 60 / 24
 				bfqxS := bfqx + "年"
 				bfsjcS := strconv.FormatInt(bfsjcT, 10) + "天"
+
 				db.MustExec("insert into gdzc(zcbm, place, zclx, pinpai, xinghao, pzmx, sn, buytime, buyqd, cfdd, zcyz, syzt, whzt, zsqk, bfqx,llbfrq,bfsjc,lubf,sfbf,bftime,bz) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqxS, llbfrq, bfsjcS, llbfrq, "--", "--", bz)
 
 				fmt.Println("购买日期", gzsj)
@@ -301,15 +429,15 @@ func main() {
 
 			}
 		}
-		// starttimeT, _ := time.Parse("2006-01-02 15:04", starttime)
-		// endtimeT, _ := time.Parse("2006-01-02 15:04", endtime)
-		// solvetime := (endtimeT.Unix() - starttimeT.Unix()) / 60
-		// solvetimeS := strconv.FormatInt(solvetime, 10) + "分钟"
-		fmt.Println(zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqx, bz)
-		// db.MustExec("insert into gdzc(starttime, endtime, question, place, questiontype, count, solvetime,note) values(?,?,?,?,?,?,?,?)", starttime, endtime, question, place, questiontype, count, solvetimeS, note)
-		// fmt.Println(starttime, endtime, question, place, questiontype, count, solvetimeS, note)
-		ctx.Redirect("/gdzc_list/?qunaye=", iris.StatusTemporaryRedirect)
-		// }
+		var page float64
+		db.Get(&page, "SELECT count(*) FROM gdzc ")
+		xsys := 15.0
+		zxsys := math.Ceil(page / xsys)
+		zxsS := strconv.FormatFloat(zxsys, 'f', -1, 64)
+		zxsZ := "/gdzc_list/?qunaye=" + zxsS
+		fmt.Println("去哪页", zxsZ)
+
+		ctx.Redirect(zxsZ, iris.StatusTemporaryRedirect)
 
 	})
 	app.Post("/insert_moban", func(ctx iris.Context) {
