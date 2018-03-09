@@ -5,11 +5,14 @@ import (
 	"math"
 	"strconv"
 	"time"
+	"txwzgl/tools"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/sessions"
+	"github.com/kataras/iris/sessions/sessiondb/redis"
+	"github.com/kataras/iris/sessions/sessiondb/redis/service"
 )
 
 // Gdzc mysql表gdzc
@@ -137,8 +140,17 @@ type Fgdinorout struct {
 }
 
 func main() {
-
+	client := redis.New(service.Config{
+		Network:     service.DefaultRedisNetwork,
+		Addr:        "localhost:6379",
+		Password:    "",
+		Database:    "",
+		MaxIdle:     0,
+		MaxActive:   0,
+		IdleTimeout: service.DefaultRedisIdleTimeout,
+		Prefix:      ""})
 	db, _ := sqlx.Connect("mysql", "root:1q2w3e@tcp(127.0.0.1:3306)/txwzglxt?charset=utf8")
+	defer db.Close()
 	app := iris.New()
 	app.RegisterView(iris.HTML("./templates", ".html"))
 	sess := sessions.New(sessions.Config{
@@ -146,6 +158,7 @@ func main() {
 		Expires:                     time.Hour * 2,
 		DisableSubdomainPersistence: false,
 	})
+	sess.UseDatabase(client)
 	app.StaticWeb("/static", "./static")
 	app.Use(func(ctx iris.Context) {
 		ph := ctx.Path()
@@ -164,13 +177,9 @@ func main() {
 	app.Get("/gdzc_list", func(ctx iris.Context) {
 		// s := sess.Start(ctx).GetString("name")
 		// if s != "" {
-		var page float64
-		db.Get(&page, "SELECT count(*) FROM gdzc ")
-		xsys := 15.0
-		zxsys := math.Ceil(page / xsys)
-		zxsZ := int(zxsys)
+
 		var aaa []int
-		for i := 0; i < zxsZ; i++ {
+		for i := 0; i < tools.GetSqlxsys(db); i++ {
 			aaa = append(aaa, i+1)
 
 		}
@@ -242,24 +251,8 @@ func main() {
 		bftime := ctx.FormValue("bftime")
 		bz := ctx.FormValue("bz")
 
-		// zcbm2 := ctx.FormValue("zcbm2")
-		// place2 := ctx.FormValue("place2")
-		// zclx2 := ctx.FormValue("zclx2")
-		// pinpai2 := ctx.FormValue("pinpai2")
-		// ggxh2 := ctx.FormValue("ggxh2")
-		// pzmx2 := ctx.FormValue("pzmx2")
-		// sn2 := ctx.FormValue("sn2")
 		gzsj2 := ctx.FormValue("gzsj2")
-		// gmqd2 := ctx.FormValue("gmqd2")
-		// cfdd2 := ctx.FormValue("cfdd2")
-		// zcyz2 := ctx.FormValue("zcyz2")
-		// sfsy2 := ctx.FormValue("sfsy2")
-		// wxzt2 := ctx.FormValue("wxzt2")
-		// zsqk2 := ctx.FormValue("zsqk2")
-		// bfqx2 := ctx.FormValue("bfqx2")
-		// sfbf2 := ctx.FormValue("sfbf2")
-		// bftime2 := ctx.FormValue("bftime2")
-		// bz2 := ctx.FormValue("bz2")
+
 		var page float64
 		db.Get(&page, "SELECT count(*) FROM gdzc ")
 		xsys := 15.0
@@ -268,6 +261,7 @@ func main() {
 		zxsZ := "/gdzc_list/?qunaye=" + zxsS
 		fmt.Println("post方法：", gzsj2, id, zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqx, sfbf, bftime, bz)
 		if gzsj == "" {
+
 			buytimeT, _ := time.Parse("2006-01-02", gzsj2)
 			if len(bfqx) == 4 {
 				bfqxI := string(bfqx[0])
@@ -279,7 +273,7 @@ func main() {
 				bfqxS := bfqxI + "年"
 				bfsjcS := strconv.FormatInt(bfsjcT, 10) + "天"
 
-				// db.MustExec("insert into gdzc(zcbm, place, zclx, pinpai, xinghao, pzmx, sn, buytime, buyqd, cfdd, zcyz, syzt, whzt, zsqk, bfqx,llbfrq,bfsjc,lubf,sfbf,bftime,bz) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqxS, llbfrq, bfsjcS, llbfrq, "--", "--", bz)
+				db.MustExec("update gdzc set zcbm = ?, place = ?, zclx = ?, pinpai = ?, xinghao = ?,pzmx = ?, sn = ?,buytime = ?,buyqd = ?,cfdd = ?, zcyz = ?, syzt = ?, whzt = ?, zsqk = ?,bfqx = ?,llbfrq = ?,bfsjc = ?,lubf = ?,sfbf = ?,bftime = ?,bz =? where id = ?", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj2, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqx, llbfrq, bfsjcS, llbfrq, sfbf, bftime, bz, id)
 
 				fmt.Println("购买日期", gzsj2)
 				fmt.Println("理论到期时间", llbfrq)
@@ -295,7 +289,7 @@ func main() {
 				bfqxS := bfqxI + "年"
 				bfsjcS := strconv.FormatInt(bfsjcT, 10) + "天"
 
-				// db.MustExec("insert into gdzc(zcbm, place, zclx, pinpai, xinghao, pzmx, sn, buytime, buyqd, cfdd, zcyz, syzt, whzt, zsqk, bfqx,llbfrq,bfsjc,lubf,sfbf,bftime,bz) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqxS, llbfrq, bfsjcS, llbfrq, "--", "--", bz)
+				db.MustExec("update gdzc set zcbm = ?, place = ?, zclx = ?, pinpai = ?, xinghao = ?,pzmx = ?, sn = ?,buytime = ?,buyqd = ?,cfdd = ?, zcyz = ?, syzt = ?, whzt = ?, zsqk = ?,bfqx = ?,llbfrq = ?,bfsjc = ?,lubf = ?,sfbf = ?,bftime = ?,bz =? where id = ?", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj2, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqx, llbfrq, bfsjcS, llbfrq, sfbf, bftime, bz, id)
 
 				fmt.Println("购买日期", gzsj2)
 				fmt.Println("理论到期时间", llbfrq)
@@ -310,36 +304,61 @@ func main() {
 				bfsjcT := (llbfrqT.Unix() - time.Now().Unix()) / 60 / 60 / 24
 				bfqxS := bfqxI + "年"
 				bfsjcS := strconv.FormatInt(bfsjcT, 10) + "天"
-
-				// db.MustExec("insert into gdzc(zcbm, place, zclx, pinpai, xinghao, pzmx, sn, buytime, buyqd, cfdd, zcyz, syzt, whzt, zsqk, bfqx,llbfrq,bfsjc,lubf,sfbf,bftime,bz) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqxS, llbfrq, bfsjcS, llbfrq, "--", "--", bz)
-
+				db.MustExec("update gdzc set zcbm = ?, place = ?, zclx = ?, pinpai = ?, xinghao = ?,pzmx = ?, sn = ?,buytime = ?,buyqd = ?,cfdd = ?, zcyz = ?, syzt = ?, whzt = ?, zsqk = ?,bfqx = ?,llbfrq = ?,bfsjc = ?,lubf = ?,sfbf = ?,bftime = ?,bz =? where id = ?", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj2, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqx, "--", "--", "--", sfbf, bftime, bz, id)
 				fmt.Println("购买日期", gzsj2)
 				fmt.Println("理论到期时间", llbfrq)
 				fmt.Println("报废期限", bfqxS)
 				fmt.Println("报废时间差", bfsjcS)
 			}
 
-			// db.MustExec("insert into gdzc(zcbm, place, zclx, pinpai, xinghao, pzmx, sn, buytime, buyqd, cfdd, zcyz, syzt, whzt, zsqk, bfqx,llbfrq,bfsjc,lubf,sfbf,bftime,bz) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqxS, llbfrq, bfsjcS, llbfrq, "--", "--", bz)
+		} else {
+			buytimeT, _ := time.Parse("2006-01-02", gzsj)
+			if len(bfqx) == 4 {
+				bfqxI := string(bfqx[0])
+				fmt.Println("报废期限为：", bfqxI)
+				bfqxT, _ := strconv.Atoi(bfqxI)
+				llbfrq := buytimeT.AddDate(bfqxT, 0, 0).Format("2006-01-02")
+				llbfrqT, _ := time.Parse("2006-01-02", llbfrq)
+				bfsjcT := (llbfrqT.Unix() - time.Now().Unix()) / 60 / 60 / 24
+				bfqxS := bfqxI + "年"
+				bfsjcS := strconv.FormatInt(bfsjcT, 10) + "天"
+				db.MustExec("update gdzc set zcbm = ?, place = ?, zclx = ?, pinpai = ?, xinghao = ?,pzmx = ?, sn = ?,buytime = ?,buyqd = ?,cfdd = ?, zcyz = ?, syzt = ?, whzt = ?, zsqk = ?,bfqx = ?,llbfrq = ?,bfsjc = ?,lubf = ?,sfbf = ?,bftime = ?,bz =? where id = ?", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqx, llbfrq, bfsjcS, llbfrq, sfbf, bftime, bz, id)
 
-			// db.MustExec("update gdzc set zcbm = ?, place = ?, zclx = ?, pinpai = ?, xinghao = ?, pzmx = ?, sn = ?, buytime = ?, buyqd = ?, cfdd = ?, zcyz = ?, syzt = ?, whzt = ?, zsqk = ?, bfqx = ?,sfbf = ?,bftime = ?,bz =? where id = ?", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj2, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqx, sfbf, bftime, bz, id)
-			// } else {
-			// 	if bfqx == "" {
-			// 		db.MustExec("insert into gdzc(zcbm, place, zclx, pinpai, xinghao, pzmx, sn, buytime, buyqd, cfdd, zcyz, syzt, whzt, zsqk, bfqx,llbfrq,bfsjc,lubf,sfbf,bftime,bz) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, "--", "--", "--", "--", "--", "--", bz)
-			// 	} else {
-			// 		buytimeT, _ := time.Parse("2006-01-02", gzsj)
-			// 		bfqxT, _ := strconv.Atoi(bfqx)
-			// 		llbfrq := buytimeT.AddDate(bfqxT, 0, 0).Format("2006-01-02")
-			// 		llbfrqT, _ := time.Parse("2006-01-02", llbfrq)
-			// 		bfsjcT := (llbfrqT.Unix() - time.Now().Unix()) / 60 / 60 / 24
-			// 		bfqxS := bfqx + "年"
-			// 		bfsjcS := strconv.FormatInt(bfsjcT, 10) + "天"
+				fmt.Println("购买日期", gzsj2)
+				fmt.Println("理论到期时间", llbfrq)
+				fmt.Println("报废期限", bfqxS)
+				fmt.Println("报废时间差", bfsjcS)
+			} else if len(bfqx) == 5 {
+				bfqxI := string(bfqx[0]) + string(bfqx[1])
+				fmt.Println("报废期限为：", bfqxI)
+				bfqxT, _ := strconv.Atoi(bfqxI)
+				llbfrq := buytimeT.AddDate(bfqxT, 0, 0).Format("2006-01-02")
+				llbfrqT, _ := time.Parse("2006-01-02", llbfrq)
+				bfsjcT := (llbfrqT.Unix() - time.Now().Unix()) / 60 / 60 / 24
+				bfqxS := bfqxI + "年"
+				bfsjcS := strconv.FormatInt(bfsjcT, 10) + "天"
 
-			// 		db.MustExec("insert into gdzc(zcbm, place, zclx, pinpai, xinghao, pzmx, sn, buytime, buyqd, cfdd, zcyz, syzt, whzt, zsqk, bfqx,llbfrq,bfsjc,lubf,sfbf,bftime,bz) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqxS, llbfrq, bfsjcS, llbfrq, "--", "--", bz)
+				db.MustExec("update gdzc set zcbm = ?, place = ?, zclx = ?, pinpai = ?, xinghao = ?,pzmx = ?, sn = ?,buytime = ?,buyqd = ?,cfdd = ?, zcyz = ?, syzt = ?, whzt = ?, zsqk = ?,bfqx = ?,llbfrq = ?,bfsjc = ?,lubf = ?,sfbf = ?,bftime = ?,bz =? where id = ?", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqx, llbfrq, bfsjcS, llbfrq, sfbf, bftime, bz, id)
 
-			// 		fmt.Println("购买日期", gzsj)
-			// 		fmt.Println("理论到期时间", llbfrq)
-			// 		fmt.Println("报废时间差", bfsjcT, "天")
-
+				fmt.Println("购买日期", gzsj2)
+				fmt.Println("理论到期时间", llbfrq)
+				fmt.Println("报废期限", bfqxS)
+				fmt.Println("报废时间差", bfsjcS)
+			} else {
+				bfqxI := bfqx
+				fmt.Println("报废期限为：", bfqxI)
+				bfqxT, _ := strconv.Atoi(bfqxI)
+				llbfrq := buytimeT.AddDate(bfqxT, 0, 0).Format("2006-01-02")
+				llbfrqT, _ := time.Parse("2006-01-02", llbfrq)
+				bfsjcT := (llbfrqT.Unix() - time.Now().Unix()) / 60 / 60 / 24
+				bfqxS := bfqxI + "年"
+				bfsjcS := strconv.FormatInt(bfsjcT, 10) + "天"
+				db.MustExec("update gdzc set zcbm = ?, place = ?, zclx = ?, pinpai = ?, xinghao = ?,pzmx = ?, sn = ?,buytime = ?,buyqd = ?,cfdd = ?, zcyz = ?, syzt = ?, whzt = ?, zsqk = ?,bfqx = ?,llbfrq = ?,bfsjc = ?,lubf = ?,sfbf = ?,bftime = ?,bz =? where id = ?", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqx, "--", "--", "--", sfbf, bftime, bz, id)
+				fmt.Println("购买日期", gzsj2)
+				fmt.Println("理论到期时间", llbfrq)
+				fmt.Println("报废期限", bfqxS)
+				fmt.Println("报废时间差", bfsjcS)
+			}
 		}
 		ctx.Redirect(zxsZ, iris.StatusTemporaryRedirect)
 		ctx.View("gdzc_update.html")
@@ -499,6 +518,7 @@ func main() {
 		if loginc == 1 {
 			s := sess.Start(ctx)
 			s.Set("name", user)
+
 			ctx.Redirect("/gdzc_list/?qunaye=1", iris.StatusTemporaryRedirect)
 		} else {
 			ctx.HTML("用户不存在")
