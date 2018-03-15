@@ -14,3 +14,13 @@ func GetSqlxsys() int {
 	zxsZ := int(zxsys)
 	return zxsZ
 }
+
+// GetSqlxsyspeople 获取固定资产显示信息页数
+func GetSqlxsyspeople() int {
+	var page float64
+	tools.DB.Get(&page, "SELECT count(*) FROM people ")
+	xsys := 15.0
+	zxsys := math.Ceil(page / xsys)
+	zxsZ := int(zxsys)
+	return zxsZ
+}

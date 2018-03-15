@@ -52,7 +52,7 @@ func InsertGdzc(ctx iris.Context) {
 
 	zxsys := GetSqlxsys()
 	zxsS := strconv.Itoa(zxsys)
-	zxsZ := "/gdzc_list/?qunaye=" + zxsS
+	zxsZ := "/list_gdzc/?qunaye=" + zxsS
 	fmt.Println("去哪页", zxsZ)
 
 	ctx.Redirect(zxsZ)

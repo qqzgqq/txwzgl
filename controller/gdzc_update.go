@@ -42,7 +42,7 @@ func UpdateGdzcP(ctx iris.Context) {
 	bz := ctx.FormValue("bz")
 	gzsj2 := ctx.FormValue("gzsj2")
 	zxsS := strconv.Itoa(GetSqlxsys())
-	zxsZ := "/gdzc_list/?qunaye=" + zxsS
+	zxsZ := "/list_gdzc/?qunaye=" + zxsS
 	if gzsj == "" {
 		if gzsj2 == "" {
 			tools.DB.MustExec("update gdzc set zcbm = ?, place = ?, zclx = ?, pinpai = ?, xinghao = ?,pzmx = ?, sn = ?,buytime = ?,buyqd = ?,cfdd = ?, zcyz = ?, syzt = ?, whzt = ?, zsqk = ?,bfqx = ?,llbfrq = ?,bfsjc = ?,lubf = ?,sfbf = ?,bftime = ?,bz =? where id = ?", zcbm, place, zclx, pinpai, ggxh, pzmx, sn, gzsj, gmqd, cfdd, zcyz, sfsy, wxzt, zsqk, bfqx, "--", "--", "--", sfbf, bftime, bz, id)

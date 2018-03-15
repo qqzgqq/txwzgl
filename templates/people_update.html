@@ -24,7 +24,7 @@
                         <a href="/list_gdzc?qunaye=" style="font-weight:bold" class="btn btn-info">固定资产</a>
                     </li>
                     <li>
-                        <a href="/insert_people" style="font-weight:bold" class="btn btn-info">添加员工信息</a>
+                        <a href="/list_people" style="font-weight:bold" class="btn btn-info">公司人员管理</a>
                     </li>
                     <li>
                         <a href="/search_people" style="font-weight:bold" class="btn btn-info">查询员工信息</a>
@@ -47,6 +47,7 @@
         </div>
     </div>
 
+
     <table border="0">
         <td>
 
@@ -61,9 +62,7 @@
                         <table class="table table-hover table-bordered">
                             <thead>
                                 <tr style="background-color:bisque">
-                                    <th>
-                                        编号
-                                    </th>
+
                                     <th>
                                         员工姓名
                                     </th>
@@ -85,24 +84,30 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{range .sqll}}
-                                <tr class="warning">
-                                    <td>{{.IDPeople}}</td>
-                                    <td>{{.Name}}</td>
-                                    <td>{{.Position}}</td>
-                                    <td>{{.Bumen}}</td>
-                                    <td>{{.Telephone}}</td>
-                                    <td>
-                                        <a href="/delete_people?deleteid_l={{.IDPeople}}" class="btn btn-small btn-danger">删</a>
-                                    </td>
-                                    <td>
-                                        <form action="/update_people" method="get">
-                                              <button class="btn btn-small btn-warning" name="updateid" value="{{.IDPeople}}">改</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                {{end}}
-
+                                <form action="/update_people" method="post">
+                                    <tr class="warning">
+                                        {{range .peoplesql}}
+                                        <td>
+                                            <input type="text" style="height:35px" name="name" value="{{.Name}}" >
+                                        </td>
+                                        <td>
+                                            <input type="text" style="height:35px" name="position" value="{{.Position}}">
+                                        </td>
+                                        <td>
+                                            <input type="text" style="height:35px" name="bumen" value="{{.Bumen}}">
+                                        </td>
+                                        <td>
+                                            <input type="text" style="height:35px" name="lxfs" value="{{.Telephone}}">
+                                        </td>
+                                       <td>
+                                           <input type="hidden" name="idpeople" value="{{.IDPeople}}" >
+                                       </td>
+                                        <td>
+                                            <button style="font-weight:bold" class="btn btn-info">修改</button>
+                                        </td>
+                                        {{end}}
+                                    </tr>
+                                </form>
                             </tbody>
                         </table>
                     </div>
@@ -111,20 +116,8 @@
 
         </td>
     </table>
-    <table border="0">
-        <td>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </td>
-        <td>
-            <div>
-                <!-- <a href="/first_y?firsty={{.firsty}}" class="btn">第一页</a> -->
-                {{range $a,$b:= .sqlnum}}
-                <a href="/list_people?qunaye={{$b}}" class="btn btn-mini">{{$b}}</a>
-                {{end}}
-            </div>
-        </td>
-    </table>
 
+    <!-- </form> -->
 </body>
 
 </html>

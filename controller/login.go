@@ -15,7 +15,7 @@ func Login(ctx iris.Context) {
 	if loginc == 1 {
 		s := tools.Sess.Start(ctx)
 		s.Set("name", user)
-		ctx.Redirect("/gdzc_list")
+		ctx.Redirect("/list_gdzc")
 	} else {
 		ctx.HTML("用户不存在")
 	}
